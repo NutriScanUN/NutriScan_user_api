@@ -18,11 +18,11 @@ Configure the following parameters in Render:
 Build Command:
 bash
 ```js
-docker build -t firestore-microservice .
+docker build -t nutriscanun-user-api .
 ```
 Start Command:
 ```js
-docker run -p 3000:3000 firestore-microservice
+docker run -d -p 3000:3000 --env-file .env --name  nutriscanun-user-api-docker nutriscanun-user-api
 ```
 Environment Variables: Add the necessary environment variables (e.g., PORT).
 Deploy the service.
