@@ -4,9 +4,9 @@
 
 To build and run the Docker container, use the following commands:
 
-```bash
 docker build -t nutriscanun-user-api .
 docker run -d -p 3000:3000 --env-file .env --name nutriscanun-user-api-docker nutriscanun-user-api
+
 Instructions to Deploy on Render
 Follow these steps to deploy your service on Render:
 
