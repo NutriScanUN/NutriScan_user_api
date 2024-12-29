@@ -5,6 +5,7 @@ WORKDIR /usr/src/app
 
 # Copiar package.json y package-lock.json
 COPY package*.json ./
+COPY nutriscan-71493-firebase-adminsdk-ugmom-589ff76776.json /usr/src/app/nutriscan-71493-firebase-adminsdk-ugmom-589ff76776.json
 
 # Instalar dependencias
 RUN npm install
