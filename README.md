@@ -1,6 +1,6 @@
 ﻿# NutriScan_user_api
 <br></br>
-Commands to docker compile and run:
+Commands to docker compile and run: \\
 docker build -t nutriscanun-user-api .
 docker run -d -p 3000:3000 --env-file .env --name  nutriscanun-user-api-docker nutriscanun-user-api
 <br></br>
