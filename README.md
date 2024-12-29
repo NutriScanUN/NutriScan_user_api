@@ -1,12 +1,25 @@
+# NutriScan_user_api
 
-### **Explanation of the Markdown structure:**
+## Commands to Docker Compile and Run
 
-**# NutriScan_user_api**: The project title, styled as a primary header.
-**## Commands to Docker Compile and Run**: A subheader for Docker instructions.
-**Code blocks**: Enclosed in triple backticks (` ```bash `) to display the Docker commands as executable code.
-**## Instructions to Deploy on Render**: A subheader for deployment instructions.
-**Ordered list**: Numbered steps are provided for the Render deployment process.
-**Inline code**: Code like `PORT` is written in backticks for clarity.
-**Notes section**: An extra section at the end with additional helpful information.
+To build and run the Docker container, use the following commands:
 
-This will give your `README.md` a clean and organized structure when viewed on GitHub or any other Markdown renderer.
+```bash
+docker build -t nutriscanun-user-api .
+docker run -d -p 3000:3000 --env-file .env --name nutriscanun-user-api-docker nutriscanun-user-api
+Instructions to Deploy on Render
+Follow these steps to deploy your service on Render:
+
+Create a repository on GitHub and upload your code.
+In Render, select "New Web Service" and connect your GitHub repository.
+Configure the following parameters in Render:
+Build Command:
+bash
+Copy code
+docker build -t firestore-microservice .
+Start Command:
+bash
+Copy code
+docker run -p 3000:3000 firestore-microservice
+Environment Variables: Add the necessary environment variables (e.g., PORT).
+Deploy the service.
