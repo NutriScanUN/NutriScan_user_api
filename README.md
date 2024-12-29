@@ -1,14 +1,16 @@
-﻿# NutriScan_user_api
-<br></br>
-Commands to docker compile and run: \\
-docker build -t nutriscanun-user-api .
-docker run -d -p 3000:3000 --env-file .env --name  nutriscanun-user-api-docker nutriscanun-user-api
-<br></br>
-Instructions to deploy on render:
-**Crea un repositorio en GitHub y sube tu código.
-En Render, selecciona "New Web Service" y conecta tu repositorio.
-Configura los siguientes parámetros en Render:
-Build Command: docker build -t firestore-microservice .
-Start Command: docker run -p 3000:3000 firestore-microservice
-Environment Variables: Añade las variables de entorno necesarias (PORT, etc.).
-Despliega el servicio.
+
+### **Explanation of the Styling:**
+1. **Headings (`#`, `##`)**: 
+   - `#` is used for the main heading (project name).
+   - `##` is used for subheadings like "Docker Commands" and "Instructions to Deploy on Render".
+
+2. **Code Blocks (` ``` `)**: 
+   - Wrap the Docker commands and other code snippets in triple backticks to highlight them as code blocks.
+
+3. **Bold Text (`**`)**: 
+   - Used for emphasizing key instructions, like "Create a repository on GitHub".
+
+4. **Bullet Points (`-`)**: 
+   - Used to list the steps for deploying on Render.
+
+This structure will display cleanly in your GitHub `README.md` file, making it easy to follow for anyone reading it.
