@@ -1,0 +1,25 @@
+{
+  "name": "user_ms",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000N\u0000u\u0000t\u0000r\u0000i\u0000S\u0000c\u0000a\u0000n\u0000_\u0000u\u0000s\u0000e\u0000r\u0000_\u0000a\u0000p\u0000i\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NutriScanUN/NutriScan_user_api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NutriScanUN/NutriScan_user_api/issues"
+  },
+  "homepage": "https://github.com/NutriScanUN/NutriScan_user_api#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase-admin": "^13.0.2"
+  }
+}
