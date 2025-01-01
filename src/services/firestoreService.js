@@ -37,6 +37,21 @@ const createDocument = async (path, data) => {
 };
 
 /**
+ * Escribe un nuevo documento en una ruta dinámica.
+ * @param {string} path - Ruta de la colección (e.g., `/usuarios/:uidUsuario/coleccionObjetivo`).
+ * @param {Object} data - Datos del documento a crear.
+ * @returns {Promise<Object>} Resultado de la operación.
+ */
+const createDocumentWithId = async (path,docId, data) => {
+    try {
+        const docRef = await db.doc(`${path}/${docId}`).add(data);
+        return { success: true, id: docRef.id, message: 'Document created successfully' };
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+};
+
+/**
  * Actualiza un documento en una ruta dinámica.
  * @param {string} path - Ruta de la colección (e.g., `/usuarios/:uidUsuario/coleccionObjetivo`).
  * @param {string} docId - ID del documento a actualizar.
@@ -108,6 +123,7 @@ const getCollectionWithPagination = async (path, orderByField, orderDirection = 
 module.exports = {
     getDocument,
     createDocument,
+    createDocumentWithId,
     updateDocument,
     getCollectionOrdered,
     getCollectionWithPagination,

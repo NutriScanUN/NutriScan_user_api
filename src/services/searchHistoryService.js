@@ -94,7 +94,7 @@ const addSearchHistoryRecord = async (uid, data) => {
         const newRecord = new SearchHistoryModel(data);
 
         // Insertar en Firestore
-        const result = await firestoreService.addDocument(path, newRecord);
+        const result = await firestoreService.createDocument(path, newRecord);
         return { success: true, message: 'Record added successfully', id: result.id };
     } catch (error) {
         return { success: false, message: error.message };
