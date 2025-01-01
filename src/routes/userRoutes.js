@@ -1,82 +1,91 @@
 const express = require('express');
 const router = express.Router();
 const userService = require('../services/userService');
+const errorHandler = require('../middlewares/errorHandler');
 
 /**
- * Ruta para crear un nuevo usuario.
- * POST /api/usuarios/:uid
+ * Crea un nuevo usuario.
  */
-router.post('/:uid', async (req, res) => {
-    const { uid } = req.params;
-    const userData = req.body;
-
+router.post('/', async (req, res, next) => {
     try {
-        const result = await userService.createUser(uid, userData);
-        res.status(result.success ? 201 : 400).json(result);
+        const data = req.body;
+        const result = await userService.createUser(data);
+        if (result.success) {
+            res.status(201).json(result);
+        } else {
+            res.status(400).json(result);
+        }
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        next(error); // Pasar el error al middleware de manejo de errores
     }
 });
 
 /**
- * Ruta para obtener un usuario por ID.
- * GET /api/usuarios/:uid
+ * Obtiene un usuario por UID.
  */
-router.get('/:uid', async (req, res) => {
-    const { uid } = req.params;
-
+router.get('/:uid', async (req, res, next) => {
     try {
+        const { uid } = req.params;
         const result = await userService.getUser(uid);
-        res.status(result.success ? 200 : 404).json(result);
+        if (result.success) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json(result);
+        }
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        next(error);
     }
 });
 
 /**
- * Ruta para actualizar un usuario.
- * PUT /api/usuarios/:uid
+ * Actualiza un usuario existente.
  */
-router.put('/:uid', async (req, res) => {
-    const { uid } = req.params;
-    const userData = req.body;
-
+router.put('/:uid', async (req, res, next) => {
     try {
-        const result = await userService.updateUser(uid, userData);
-        res.status(result.success ? 200 : 400).json(result);
+        const { uid } = req.params;
+        const data = req.body;
+        const result = await userService.updateUser(uid, data);
+        if (result.success) {
+            res.status(200).json(result);
+        } else {
+            res.status(400).json(result);
+        }
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        next(error);
     }
 });
 
 /**
- * Ruta para eliminar un usuario.
- * DELETE /api/usuarios/:uid
+ * Elimina un usuario por UID.
  */
-router.delete('/:uid', async (req, res) => {
-    const { uid } = req.params;
-
+router.delete('/:uid', async (req, res, next) => {
     try {
+        const { uid } = req.params;
         const result = await userService.deleteUser(uid);
-        res.status(result.success ? 200 : 404).json(result);
+        if (result.success) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json(result);
+        }
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        next(error);
     }
 });
 
 /**
- * Ruta para verificar si un usuario existe.
- * GET /api/usuarios/:uid/existe
+ * Verifica si un usuario existe por UID.
  */
-router.get('/:uid/existe', async (req, res) => {
-    const { uid } = req.params;
-
+router.get('/:uid/exists', async (req, res, next) => {
     try {
-        const exists = await userService.doesUserExist(uid);
-        res.status(200).json({ success: true, exists });
+        const { uid } = req.params;
+        const result = await userService.doesUserExist(uid);
+        res.status(200).json(result);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        next(error);
     }
 });
+
+// Middleware de manejo de errores
+router.use(errorHandler);
 
 module.exports = router;
