@@ -24,8 +24,11 @@ const errorHandler = require('../middleware/errorHandler');
  */
 router.post('/', async (req, res, next) => {
     try {
-        const data = req.body;
-        const result = await userService.createUser(data);
+        const { uid, ...userData } = req.body;
+        if (!uid) {
+            return res.status(400).json({ success: false, message: 'UID is required' });
+        }
+        const result = await userService.createUser(uid,userData);
         if (result.success) {
             res.status(201).json(result);
         } else {

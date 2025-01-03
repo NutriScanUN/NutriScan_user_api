@@ -1,5 +1,5 @@
 const firestoreService = require('./firestoreService');
-const UserModel = require('../models/userModel');
+const { UserModel } = require('../models/userModel');
 
 /**
  * Crea un nuevo usuario en la colección `/usuarios`.
@@ -8,11 +8,20 @@ const UserModel = require('../models/userModel');
  * @returns {Promise<Object>} Resultado de la operación.
  */
 const createUser = async (uid, userData) => {
+    console.log('UID:', uid);
+    console.log('User Data:', userData);
+    if (!uid) {
+        throw new Error('UID is required');
+    }
+    if (!userData || typeof userData !== 'object') {
+        throw new Error('User data is required and must be an object');
+    }
+
     const path = `/usuarios`;
 
     try {
         const user = new UserModel(userData); // Validación del modelo
-        const result = await firestoreService.createDocumentWithId(path, uid, user);
+        const result = await firestoreService.createDocumentWithId(path, uid, user.toPlainObject());
         return { success: true, message: 'User created successfully', data: result };
     } catch (error) {
         return { success: false, message: error.message };
@@ -32,7 +41,7 @@ const getUser = async (uid) => {
         if (!result.success) return result;
 
         // Validación del modelo con los datos obtenidos
-        const user = new UserModel(result.data);
+        const user = new UserModel({...result.data,uid:uid});
         return { success: true, data: user };
     } catch (error) {
         return { success: false, message: error.message };
@@ -50,7 +59,7 @@ const updateUser = async (uid, userData) => {
 
     try {
         const user = new UserModel(userData); // Validación del modelo
-        const result = await firestoreService.updateDocument(path, uid, user);
+        const result = await firestoreService.updateDocument(path, uid, user.toPlainObject());
         return { success: true, message: 'User updated successfully', data: result };
     } catch (error) {
         return { success: false, message: error.message };

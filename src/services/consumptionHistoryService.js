@@ -1,6 +1,5 @@
 const firestoreService = require('./firestoreService');
-const { Timestamp } = require('firebase-admin/firestore');
-
+const ConsumptionHistoryModel = require('../models/consumptionHistoryModel')
 /**
  * Consulta todos los productos del historial de consumo de un usuario.
  * @param {string} uid - ID del usuario.
@@ -12,37 +11,39 @@ const getAllConsumptionHistory = async (uid) => {
 };
 
 /**
- * Consulta los productos consumidos dentro de los últimos `n` días, ordenados por fecha.
+ * Obtiene los registros del historial de búsqueda dentro de un rango de días.
  * @param {string} uid - ID del usuario.
- * @param {number} days - Número de días hacia atrás desde hoy.
+ * @param {number} n - Número de días hacia atrás (mínimo 1).
+ * @param {string} [orderDirection='asc'] - Dirección de ordenamiento ('asc' o 'desc').
  * @returns {Promise<Object>} Resultado de la operación.
  */
-const getConsumptionHistoryByDays = async (uid, days) => {
+const getConsumptionHistoryByDays = async (uid, n, orderDirection = 'asc') => {
     const path = `/usuarios/${uid}/historial_consumo`;
 
     try {
-        const today = Timestamp.now();
-        const pastDate = new Timestamp(
-            Math.floor((Date.now() - days * 24 * 60 * 60 * 1000) / 1000),
-            0
+        // Calcular la fecha límite para la consulta
+        const now = new Date();
+        const startDate = new Date(now);
+        startDate.setDate(startDate.getDate() - Math.max(1, n)); // Al menos 1 día antes
+
+        // Llamar a la función de Firebase Service
+        console.log(path)
+        const result = await firestoreService.getDocumentsByDateRange(
+            path,
+            startDate,
+            now,
+            'fecha_consumo',
+            orderDirection
         );
 
-        const querySnapshot = await firestoreService.getCollectionOrdered(path, 'fecha_consumo', 'asc');
-        if (!querySnapshot.success) {
-            return querySnapshot;
+        console.log(result)
+        if (!result.success) {
+            return result;
         }
 
-        // Filtra los documentos que están dentro del rango de fechas
-        const filteredDocuments = querySnapshot.data.filter((doc) => {
-            const fechaConsumo = doc.fecha_consumo.toDate();
-            return fechaConsumo >= pastDate.toDate() && fechaConsumo <= today.toDate();
-        });
-
-        if (filteredDocuments.length === 0) {
-            return { success: false, message: 'No documents found in the specified date range' };
-        }
-
-        return { success: true, data: filteredDocuments };
+        // Crear los objetos del modelo con los resultados
+        const data = result.data.map(item => new ConsumptionHistoryModel(item));
+        return { success: true, data };
     } catch (error) {
         return { success: false, message: error.message };
     }
@@ -56,7 +57,6 @@ const getConsumptionHistoryByDays = async (uid, days) => {
  */
 const deleteConsumptionHistoryRecord = async (uid, docId) => {
     const path = `/usuarios/${uid}/historial_consumo`;
-
     try {
         const result = await firestoreService.deleteDocument(path, docId);
         return { success: true, message: 'Record deleted successfully', data: result };
@@ -79,7 +79,8 @@ const addConsumptionHistoryRecord = async (uid, data) => {
         const newRecord = new ConsumptionHistoryModel(data);
 
         // Insertar en Firestore
-        const result = await firestoreService.createDocument(path, newRecord);
+        console.log(newRecord.toPlainObject())
+        const result = await firestoreService.createDocument(path, newRecord.toPlainObject());
         return { success: true, message: 'Record added successfully', id: result.id };
     } catch (error) {
         return { success: false, message: error.message };

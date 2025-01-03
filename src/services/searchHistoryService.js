@@ -23,23 +23,36 @@ const getSearchHistoryWithLimit = async (uid, limit, orderDirection = 'asc') => 
 };
 
 /**
- * Consulta una cantidad específica de registros del historial de búsqueda ordenado por fecha_busqueda.
+ * Obtiene los registros del historial de búsqueda dentro de un rango de días.
  * @param {string} uid - ID del usuario.
- * @param {number} n - Número de registros a obtener.
+ * @param {number} n - Número de días hacia atrás (mínimo 1).
  * @param {string} [orderDirection='asc'] - Dirección de ordenamiento ('asc' o 'desc').
  * @returns {Promise<Object>} Resultado de la operación.
  */
-const getSearchHistoryByCount = async (uid, n, orderDirection = 'asc') => {
+const getSearchHistoryByDays = async (uid, n, orderDirection = 'asc') => {
     const path = `/usuarios/${uid}/historial_busqueda`;
 
     try {
-        const result = await firestoreService.getCollectionWithPagination(path, 'fecha_busqueda', orderDirection, null, n);
+        // Calcular la fecha límite para la consulta
+        const now = new Date();
+        const startDate = new Date(now);
+        startDate.setDate(startDate.getDate() - Math.max(1, n)); // Al menos 1 día antes
+
+        // Llamar a la función de Firebase Service
+        const result = await firestoreService.getDocumentsByDateRange(
+            path,
+            startDate,
+            now,
+            'fecha_busqueda',
+            orderDirection
+        );
+
         if (!result.success) {
             return result;
         }
 
-        // Validar los resultados usando el modelo
-        const data = result.data.map((item) => new SearchHistoryModel(item));
+        // Crear los objetos del modelo con los resultados
+        const data = result.data.map(item => new SearchHistoryModel(item));
         return { success: true, data };
     } catch (error) {
         return { success: false, message: error.message };
@@ -61,7 +74,10 @@ const getAllSearchHistory = async (uid, orderDirection = 'asc') => {
     }
 
     // Validar los resultados usando el modelo
-    const data = result.data.map((item) => new SearchHistoryModel(item));
+    const data = result.data.map((item) => {
+        console.log(item) // Extraer el ID del documento
+        return new SearchHistoryModel({...item});
+    });
     return { success: true, data };
 };
 
@@ -94,7 +110,7 @@ const addSearchHistoryRecord = async (uid, data) => {
         const newRecord = new SearchHistoryModel(data);
 
         // Insertar en Firestore
-        const result = await firestoreService.createDocument(path, newRecord);
+        const result = await firestoreService.createDocument(path, newRecord.toPlainObject());
         return { success: true, message: 'Record added successfully', id: result.id };
     } catch (error) {
         return { success: false, message: error.message };
@@ -103,7 +119,7 @@ const addSearchHistoryRecord = async (uid, data) => {
 
 module.exports = {
     getSearchHistoryWithLimit,
-    getSearchHistoryByCount,
+    getSearchHistoryByDays,
     getAllSearchHistory,
     deleteSearchHistoryRecord,
     addSearchHistoryRecord,

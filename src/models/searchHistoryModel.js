@@ -40,6 +40,21 @@ class SearchHistoryModel {
     }
     return true;
   }
+
+  /**
+   * Convierte la instancia del modelo a un objeto plano.
+   * @returns {Object} Objeto plano con las propiedades del modelo.
+   */
+  toPlainObject() {
+    return {
+      id: this.id,
+      fecha_busqueda: this.fecha_busqueda,
+      id_producto: this.id_producto,
+      redireccion_tienda: this.redireccion_tienda,
+      id_tienda: this.id_tienda,
+      activo: this.activo,
+    };
+  }
 }
 
 module.exports = SearchHistoryModel;

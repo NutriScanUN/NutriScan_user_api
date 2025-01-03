@@ -49,6 +49,22 @@ class UserModel {
     }
     return true;
   }
+
+
+  /**
+   * Convierte la instancia a un objeto plano.
+   * @returns {Object} Objeto plano con las propiedades del modelo.
+   */
+  toPlainObject() {
+    return {
+      uid: this.uid,
+      nombres: this.nombres,
+      email: this.email,
+      fecha_registro: this.fecha_registro,
+      rol: this.rol,
+      ajustes: this.ajustes,
+    };
+  }
 }
 
 module.exports = { UserModel, Roles };

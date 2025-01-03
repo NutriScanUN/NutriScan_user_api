@@ -9,26 +9,21 @@ const setupSwagger = require('./swagger');
 
 
 const app = express();
+app.use(express.json());
 
 // Configuración de Swagger
-// setupSwagger(app);
+setupSwagger(app);
 
 // Middlewares globales
 // app.use(cors());
 // app.use(bodyParser.json());
 
 // Rutas
-// app.use('/api/search-history', searchHistoryRoute);
-// app.use('/api/consumption-history', consumptionHistoryRoute);
+app.use('/api/search-history', searchHistoryRoute);
+app.use('/api/consumption-history', consumptionHistoryRoute);
 app.use('/api/users', userRoute);
 
 // Manejo de errores
-// app.use(errorHandler);
-
-// Puerto
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
+app.use(errorHandler);
 
 module.exports = app;

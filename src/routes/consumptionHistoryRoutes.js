@@ -79,8 +79,8 @@ router.get('/:uid/all', async (req, res, next) => {
 router.get('/:uid/days', async (req, res, next) => {
     try {
         const { uid } = req.params;
-        const { days, orderDirection = 'asc' } = req.query;
-        const result = await consumptionHistoryService.getConsumptionHistoryByDays(uid, parseInt(days), orderDirection);
+        const { days } = req.query;
+        const result = await consumptionHistoryService.getConsumptionHistoryByDays(uid, parseInt(days), 'asc');
         if (result.success) {
             res.status(200).json(result);
         } else {
@@ -161,8 +161,7 @@ router.post('/:uid', async (req, res, next) => {
 router.delete('/:uid/:recordId', async (req, res, next) => {
     try {
         const { uid, recordId } = req.params;
-        const collectionPath = `/usuarios/${uid}/historial_consumo`;
-        const result = await consumptionHistoryService.deleteConsumptionHistoryRecord(collectionPath, recordId);
+        const result = await consumptionHistoryService.deleteConsumptionHistoryRecord(uid, recordId);
         if (result.success) {
             res.status(200).json(result);
         } else {

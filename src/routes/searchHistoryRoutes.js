@@ -82,11 +82,11 @@ router.get('/:uid/limit', async (req, res, next) => {
  *       404:
  *         description: Historial no encontrado.
  */
-router.get('/:uid/count', async (req, res, next) => {
+router.get('/:uid/days', async (req, res, next) => {
     try {
         const { uid } = req.params;
-        const { count, orderDirection = 'asc' } = req.query;
-        const result = await searchHistoryService.getSearchHistoryByCount(uid, parseInt(count), orderDirection);
+        const { days } = req.query;
+        const result = await searchHistoryService.getSearchHistoryByDays(uid, parseInt(days), 'asc');
         if (result.success) {
             res.status(200).json(result);
         } else {
