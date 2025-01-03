@@ -1,10 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const userService = require('../services/userService');
-const errorHandler = require('../middlewares/errorHandler');
+const errorHandler = require('../middleware/errorHandler');
 
 /**
- * Crea un nuevo usuario.
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Crea un nuevo usuario.
+ *     tags:
+ *       - Usuarios
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       201:
+ *         description: Usuario creado con éxito.
+ *       400:
+ *         description: Error al crear el usuario.
  */
 router.post('/', async (req, res, next) => {
     try {
@@ -16,12 +32,29 @@ router.post('/', async (req, res, next) => {
             res.status(400).json(result);
         }
     } catch (error) {
-        next(error); // Pasar el error al middleware de manejo de errores
+        next(error);
     }
 });
 
 /**
- * Obtiene un usuario por UID.
+ * @swagger
+ * /users/{uid}:
+ *   get:
+ *     summary: Obtiene un usuario por UID.
+ *     tags:
+ *       - Usuarios
+ *     parameters:
+ *       - in: path
+ *         name: uid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: UID del usuario a buscar.
+ *     responses:
+ *       200:
+ *         description: Información del usuario obtenida con éxito.
+ *       404:
+ *         description: Usuario no encontrado.
  */
 router.get('/:uid', async (req, res, next) => {
     try {
@@ -38,7 +71,30 @@ router.get('/:uid', async (req, res, next) => {
 });
 
 /**
- * Actualiza un usuario existente.
+ * @swagger
+ * /users/{uid}:
+ *   put:
+ *     summary: Actualiza un usuario existente.
+ *     tags:
+ *       - Usuarios
+ *     parameters:
+ *       - in: path
+ *         name: uid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: UID del usuario a actualizar.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado con éxito.
+ *       400:
+ *         description: Error al actualizar el usuario.
  */
 router.put('/:uid', async (req, res, next) => {
     try {
@@ -56,7 +112,24 @@ router.put('/:uid', async (req, res, next) => {
 });
 
 /**
- * Elimina un usuario por UID.
+ * @swagger
+ * /users/{uid}:
+ *   delete:
+ *     summary: Elimina un usuario por UID.
+ *     tags:
+ *       - Usuarios
+ *     parameters:
+ *       - in: path
+ *         name: uid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: UID del usuario a eliminar.
+ *     responses:
+ *       200:
+ *         description: Usuario eliminado con éxito.
+ *       404:
+ *         description: Usuario no encontrado.
  */
 router.delete('/:uid', async (req, res, next) => {
     try {
@@ -73,7 +146,22 @@ router.delete('/:uid', async (req, res, next) => {
 });
 
 /**
- * Verifica si un usuario existe por UID.
+ * @swagger
+ * /users/{uid}/exists:
+ *   get:
+ *     summary: Verifica si un usuario existe por UID.
+ *     tags:
+ *       - Usuarios
+ *     parameters:
+ *       - in: path
+ *         name: uid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: UID del usuario.
+ *     responses:
+ *       200:
+ *         description: Resultado de la verificación.
  */
 router.get('/:uid/exists', async (req, res, next) => {
     try {
