@@ -19,14 +19,18 @@ class UserModel {
    * @param {string} data.id - Uid del usuario.
    * @param {string} data.nombres - Nombre completo del usuario.
    * @param {string} data.email - Correo electrónico del usuario.
+   * @param {string} data.imagen - Url del alojamiento de la imagen en storage.
    * @param {Timestamp} data.fecha_registro - Fecha de registro del usuario (Firebase Timestamp).
+   * @param {Timestamp} data.fecha_nacimiento - Fecha de registro del usuario (Firebase Timestamp).
    * @param {string} data.rol - Rol del usuario (estándar o pagado).
    * @param {Object} [data.ajustes] - Configuración personalizada del usuario.
    */
-  constructor({ uid, nombres, email, fecha_registro, rol, ajustes }) {
+  constructor({ uid, nombres, email, url_imagen, fecha_registro, fecha_nacimiento, rol, ajustes }) {
     this.uid = uid || null;
     this.nombres = nombres || '';
     this.email = email || '';
+    this.url_imagen = url_imagen || '';
+    this.fecha_nacimiento = fecha_nacimiento || Timestamp.now(); // Timestamp de Firebase por defecto.
     this.fecha_registro = fecha_registro || Timestamp.now(); // Timestamp de Firebase por defecto.
     this.rol = rol || Roles.ESTANDAR; // Valor predeterminado "usuario".
     this.ajustes = ajustes || {}; // Configuración personalizada, por defecto vacío.
@@ -42,6 +46,9 @@ class UserModel {
     if (!data.nombres) throw new Error('El campo "nombres" es obligatorio.');
     if (!data.email) throw new Error('El campo "email" es obligatorio.');
     if (!data.fecha_registro || !(data.fecha_registro instanceof Timestamp)) {
+      throw new Error('El campo "fecha_registro" debe ser un Firebase Timestamp.');
+    }
+    if (!data.fecha_nacimiento || !(data.fecha_nacimiento instanceof Timestamp)) {
       throw new Error('El campo "fecha_registro" debe ser un Firebase Timestamp.');
     }
     if (!Object.values(Roles).includes(data.rol)) {
