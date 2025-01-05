@@ -1,6 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 const searchHistoryRoute = require('./routes/searchHistoryRoutes');
 const consumptionHistoryRoute = require('./routes/consumptionHistoryRoutes');
 const userRoute = require('./routes/userRoutes');
