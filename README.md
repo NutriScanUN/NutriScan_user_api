@@ -9,6 +9,13 @@ docker build -t nutriscanun-user-api .
 docker run -d -p 3000:3000 --env-file .env --name nutriscanun-user-api-docker nutriscanun-user-api
 ```
 
+## Image Deploy
+
+```js
+docker tag nutriscanun-user-api juanxo074/nutriscan-user-api:latest
+```
+
+
 ## Instructions to Deploy on Render
 Follow these steps to deploy your service on Render:
 
