@@ -5,6 +5,58 @@ const errorHandler = require('../middleware/errorHandler');
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         uid:
+ *           type: string
+ *           description: ID único del usuario.
+ *           example: "123456"
+ *         nombres:
+ *           type: string
+ *           description: Nombre completo del usuario.
+ *           example: "Juan Pérez"
+ *         email:
+ *           type: string
+ *           description: Correo electrónico del usuario.
+ *           example: "juan.perez@example.com"
+ *         url_imagen:
+ *           type: string
+ *           description: URL de la imagen de perfil del usuario.
+ *           example: ""
+ *         fecha_nacimiento:
+ *           type: object
+ *           properties:
+ *             _seconds:
+ *               type: integer
+ *               example: 1738042253
+ *             _nanoseconds:
+ *               type: integer
+ *               example: 117000000
+ *         fecha_registro:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha de registro del usuario.
+ *           example: "2025-01-15T12:00:00.000Z"
+ *         rol:
+ *           type: string
+ *           description: Rol del usuario.
+ *           example: "usuario"
+ *         ajustes:
+ *           type: object
+ *           properties:
+ *             notificaciones:
+ *               type: boolean
+ *               example: true
+ *             tema:
+ *               type: string
+ *               example: "oscuro"
+ */
+
+/**
+ * @swagger
  * /users:
  *   post:
  *     summary: Crea un nuevo usuario.
@@ -15,12 +67,80 @@ const errorHandler = require('../middleware/errorHandler');
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             type: object
+ *             properties:
+ *               uid:
+ *                 type: string
+ *                 description: Identificador único del usuario.
+ *                 example: "123456"
+ *               nombres:
+ *                 type: string
+ *                 description: Nombres del usuario.
+ *                 example: "Juan Andres C"
+ *               email:
+ *                 type: string
+ *                 description: Correo electrónico del usuario.
+ *                 example: "juan.perez@example.com"
+ *               url_imagen:
+ *                 type: string
+ *                 description: URL de la imagen del usuario.
+ *                 example: ""
+ *               fecha_nacimiento:
+ *                 type: object
+ *                 description: Fecha de nacimiento en formato TimeStamp de Firebase.
+ *                 properties:
+ *                   _seconds:
+ *                     type: integer
+ *                     example: 1738123242
+ *                   _nanoseconds:
+ *                     type: integer
+ *                     example: 927000000
+ *               fecha_registro:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Fecha de registro en formato ISO 8601.
+ *                 example: "2025-01-15T12:00:00.000Z"
+ *               rol:
+ *                 type: string
+ *                 description: Rol del usuario.
+ *                 example: "usuario"
+ *               ajustes:
+ *                 type: object
+ *                 description: Configuraciones del usuario.
+ *                 properties:
+ *                   notificaciones:
+ *                     type: boolean
+ *                     example: true
+ *                   tema:
+ *                     type: string
+ *                     example: "oscuro"
  *     responses:
  *       201:
  *         description: Usuario creado con éxito.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Usuario creado con éxito."
  *       400:
  *         description: Error al crear el usuario.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Error al crear el usuario."
  */
 router.post('/', async (req, res, next) => {
     try {
@@ -55,10 +175,72 @@ router.post('/', async (req, res, next) => {
  *         description: UID del usuario a buscar.
  *     responses:
  *       200:
- *         description: Información del usuario obtenida con éxito.
+ *         description: Usuario encontrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     uid:
+ *                       type: string
+ *                       example: "123456"
+ *                     nombres:
+ *                       type: string
+ *                       example: "Juan Andres C"
+ *                     email:
+ *                       type: string
+ *                       example: "juan.perez@example.com"
+ *                     url_imagen:
+ *                       type: string
+ *                       example: ""
+ *                     fecha_nacimiento:
+ *                       type: object
+ *                       description: Fecha de nacimiento en formato TimeStamp de Firebase.
+ *                       properties:
+ *                         _seconds:
+ *                           type: integer
+ *                           example: 1738123242
+ *                         _nanoseconds:
+ *                           type: integer
+ *                           example: 927000000
+ *                     fecha_registro:
+ *                       type: string
+ *                       format: date-time
+ *                       description: Fecha de registro en formato ISO 8601.
+ *                       example: "2025-01-15T12:00:00.000Z"
+ *                     rol:
+ *                       type: string
+ *                       example: "usuario"
+ *                     ajustes:
+ *                       type: object
+ *                       properties:
+ *                         notificaciones:
+ *                           type: boolean
+ *                           example: true
+ *                         tema:
+ *                           type: string
+ *                           example: "oscuro"
  *       404:
  *         description: Usuario no encontrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Error"
  */
+
 router.get('/:uid', async (req, res, next) => {
     try {
         const { uid } = req.params;
@@ -92,12 +274,76 @@ router.get('/:uid', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             type: object
+ *             properties:
+ *               nombres:
+ *                 type: string
+ *                 description: Nombres del usuario.
+ *                 example: "Juan Andres C"
+ *               email:
+ *                 type: string
+ *                 description: Correo electrónico del usuario.
+ *                 example: "juan.perez@example.com"
+ *               url_imagen:
+ *                 type: string
+ *                 description: URL de la imagen del usuario.
+ *                 example: ""
+ *               fecha_nacimiento:
+ *                 type: object
+ *                 description: Fecha de nacimiento en formato TimeStamp de Firebase.
+ *                 properties:
+ *                   _seconds:
+ *                     type: integer
+ *                     example: 1738123242
+ *                   _nanoseconds:
+ *                     type: integer
+ *                     example: 927000000
+ *               ajustes:
+ *                 type: object
+ *                 description: Configuraciones del usuario.
+ *                 properties:
+ *                   notificaciones:
+ *                     type: boolean
+ *                     example: true
+ *                   tema:
+ *                     type: string
+ *                     example: "oscuro"
  *     responses:
  *       200:
  *         description: Usuario actualizado con éxito.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "User updated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     success:
+ *                       type: boolean
+ *                       example: true
+ *                     message:
+ *                       type: string
+ *                       example: "Document updated successfully"
  *       400:
  *         description: Error al actualizar el usuario.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Error al actualizar el usuario."
  */
 router.put('/:uid', async (req, res, next) => {
     try {
@@ -164,7 +410,12 @@ router.delete('/:uid', async (req, res, next) => {
  *         description: UID del usuario.
  *     responses:
  *       200:
- *         description: Resultado de la verificación.
+ *         description: Resultado de la verificación de existencia del usuario.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: boolean
+ *               example: true
  */
 router.get('/:uid/exists', async (req, res, next) => {
     try {
