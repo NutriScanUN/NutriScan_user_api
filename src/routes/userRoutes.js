@@ -240,7 +240,6 @@ router.post('/', async (req, res, next) => {
  *                   type: string
  *                   example: "Error"
  */
-
 router.get('/:uid', async (req, res, next) => {
     try {
         const { uid } = req.params;
