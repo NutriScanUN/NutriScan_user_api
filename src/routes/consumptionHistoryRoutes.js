@@ -5,7 +5,51 @@ const errorHandler = require('../middleware/errorHandler');
 
 /**
  * @swagger
- * /consumptionHistory/{uid}/all:
+ * components:
+ *   schemas:
+ *     ConsumptionHistoryRecord:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: Identificador único generado por Firebase para el registro de historial de consumo.
+ *           example: "yLz21syVA4tjZMpCyGQz"
+ *         id_producto:
+ *           type: string
+ *           description: Identificador único del producto consumido.
+ *           example: "product123"
+ *         fecha_consumo:
+ *           type: object
+ *           description: Fecha en que se registró el consumo. Es un Timestamp de Firebase.
+ *           properties:
+ *             seconds:
+ *               type: integer
+ *               description: Valor de los segundos en el timestamp de Firebase.
+ *               example: 1609459200
+ *             nanoseconds:
+ *               type: integer
+ *               description: Valor de los nanosegundos en el timestamp de Firebase.
+ *               example: 0
+ *         cantidad_consumida:
+ *           type: number
+ *           description: Cantidad consumida del producto.
+ *           example: 2
+ *         nutrientes_ingeridos:
+ *           type: object
+ *           description: Detalle de los nutrientes ingeridos, representados como un mapa clave-valor.
+ *           additionalProperties:
+ *             type: number
+ *           example: {"calorias": 150, "proteinas": 10, "grasas": 5}
+ *         activo:
+ *           type: boolean
+ *           description: Indica si el registro está activo o no.
+ *           example: true
+ */
+
+
+/**
+ * @swagger
+ * /consumption-history/{uid}/all:
  *   get:
  *     summary: Obtiene todo el historial de consumo de un usuario.
  *     tags:
@@ -46,7 +90,7 @@ router.get('/:uid/all', async (req, res, next) => {
 
 /**
  * @swagger
- * /consumptionHistory/{uid}/days:
+ * /consumption-history/{uid}/{days}:
  *   get:
  *     summary: Obtiene el historial de consumo de un usuario en un rango de días desde hoy.
  *     tags:
@@ -58,7 +102,7 @@ router.get('/:uid/all', async (req, res, next) => {
  *         schema:
  *           type: string
  *         description: ID del usuario.
- *       - in: query
+ *       - in: path
  *         name: days
  *         required: true
  *         schema:
@@ -76,10 +120,9 @@ router.get('/:uid/all', async (req, res, next) => {
  *       404:
  *         description: Historial no encontrado.
  */
-router.get('/:uid/days', async (req, res, next) => {
+router.get('/:uid/:days', async (req, res, next) => {
     try {
-        const { uid } = req.params;
-        const { days } = req.query;
+        const { uid, days } = req.params;
         const result = await consumptionHistoryService.getConsumptionHistoryByDays(uid, parseInt(days), 'asc');
         if (result.success) {
             res.status(200).json(result);
@@ -93,7 +136,7 @@ router.get('/:uid/days', async (req, res, next) => {
 
 /**
  * @swagger
- * /consumptionHistory/{uid}:
+ * /consumption-history/{uid}:
  *   post:
  *     summary: Agrega un nuevo registro al historial de consumo de un usuario.
  *     tags:
@@ -134,7 +177,7 @@ router.post('/:uid', async (req, res, next) => {
 
 /**
  * @swagger
- * /consumptionHistory/{uid}/{recordId}:
+ * /consumption-history/{uid}/{recordId}:
  *   delete:
  *     summary: Elimina un registro específico del historial de consumo.
  *     tags:

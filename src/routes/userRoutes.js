@@ -29,10 +29,10 @@ const errorHandler = require('../middleware/errorHandler');
  *         fecha_nacimiento:
  *           type: object
  *           properties:
- *             _seconds:
+ *             seconds:
  *               type: integer
  *               example: 1738042253
- *             _nanoseconds:
+ *             nanoseconds:
  *               type: integer
  *               example: 117000000
  *         fecha_registro:
@@ -89,10 +89,10 @@ const errorHandler = require('../middleware/errorHandler');
  *                 type: object
  *                 description: Fecha de nacimiento en formato TimeStamp de Firebase.
  *                 properties:
- *                   _seconds:
+ *                   seconds:
  *                     type: integer
  *                     example: 1738123242
- *                   _nanoseconds:
+ *                   nanoseconds:
  *                     type: integer
  *                     example: 927000000
  *               fecha_registro:
@@ -203,10 +203,10 @@ router.post('/', async (req, res, next) => {
  *                       type: object
  *                       description: Fecha de nacimiento en formato TimeStamp de Firebase.
  *                       properties:
- *                         _seconds:
+ *                         seconds:
  *                           type: integer
  *                           example: 1738123242
- *                         _nanoseconds:
+ *                         nanoseconds:
  *                           type: integer
  *                           example: 927000000
  *                     fecha_registro:
@@ -295,7 +295,7 @@ router.get('/:uid', async (req, res, next) => {
  *                   _seconds:
  *                     type: integer
  *                     example: 1738123242
- *                   _nanoseconds:
+ *                   nanoseconds:
  *                     type: integer
  *                     example: 927000000
  *               ajustes:
