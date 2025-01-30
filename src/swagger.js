@@ -11,7 +11,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: `${process.env.SERVER_PRODUCTION}api`,
+            url: `${'http://localhost:3000/'}api`,
             description: 'Servidor local',
         },
     ],

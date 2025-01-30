@@ -232,7 +232,7 @@ router.get('/:uid/:days', async (req, res, next) => {
 
 /**
  * @swagger
- * /search-history/{uid}/all:
+ * /search-history/{uid}:
  *   get:
  *     summary: Obtener todo el historial de búsqueda de un usuario.
  *     description: Devuelve todos los registros del historial de búsqueda para el usuario especificado por su UID, con la opción de ordenar por fecha.
@@ -327,10 +327,12 @@ router.get('/:uid/:days', async (req, res, next) => {
  *       500:
  *         description: Error interno del servidor.
  */
-router.get('/:uid/all', async (req, res, next) => {
+router.get('/:uid', async (req, res, next) => {
     try {
         const { uid } = req.params;
+        console.log("🚀 ~ router.get ~ uid:", uid)
         const { orderDirection = 'asc' } = req.query;
+        console.log("🚀 ~ router.get ~ orderDirection:", orderDirection)
         const result = await searchHistoryService.getAllSearchHistory(uid, orderDirection);
         if (result.success) {
             res.status(200).json(result);

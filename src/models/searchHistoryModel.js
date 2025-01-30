@@ -15,7 +15,7 @@ class SearchHistoryModel {
    */
   constructor({ id, fecha_busqueda, id_producto, redireccion_tienda, id_tienda, activo }) {
     this.id = id || null; // Identificador único generado por Firebase.
-    this.fecha_busqueda = fecha_busqueda || Timestamp.now(); // Timestamp de Firebase por defecto.
+    this.fecha_busqueda = new Timestamp(fecha_busqueda?.seconds,fecha_busqueda?.nanoseconds) || Timestamp.now(); // Timestamp de Firebase por defecto.
     this.id_producto = id_producto || '';
     this.redireccion_tienda = redireccion_tienda || false; // Por defecto, no hubo redirección.
     this.id_tienda = id_tienda || ''; // Valor opcional.
