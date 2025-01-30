@@ -48,7 +48,7 @@ class SearchHistoryModel {
   toPlainObject() {
     return {
       id: this.id,
-      fecha_busqueda: this.fecha_busqueda,
+      fecha_busqueda: new Timestamp(this.fecha_busqueda?.seconds, this.fecha_busqueda?.nanoseconds),
       id_producto: this.id_producto,
       redireccion_tienda: this.redireccion_tienda,
       id_tienda: this.id_tienda,
