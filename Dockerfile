@@ -1,11 +1,11 @@
-FROM node:16-alpine
+FROM node:22-alpine
 
 # Crear y establecer el directorio de trabajo
 WORKDIR /usr/src/app
 
 # Copiar package.json y package-lock.json
 COPY package*.json ./
-COPY nutriscan-71493-firebase-adminsdk-ugmom-e4fbdbaa0b.json /usr/src/app/nutriscan-71493-firebase-adminsdk-ugmom-e4fbdbaa0b.json
+COPY nutriscan-71493-firebase-adminsdk-ugmom-*.json /usr/src/app/nutriscan-71493-firebase-adminsdk-ugmom-e4fbdbaa0b.json
  
 # Instalar dependencias
 RUN npm install

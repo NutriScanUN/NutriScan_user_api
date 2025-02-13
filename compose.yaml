@@ -1,0 +1,17 @@
+services:
+  user-api:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file: ".env"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./
+          target: /usr/src/app
+          ignore:
+            - node_modules/
+            - README.md
+            - .gitignore
+
+    
