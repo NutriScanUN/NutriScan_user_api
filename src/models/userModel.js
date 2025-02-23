@@ -67,6 +67,7 @@ class UserModel {
       uid: this.uid,
       nombres: this.nombres,
       email: this.email,
+      fecha_nacimiento: this.fecha_nacimiento,
       fecha_registro: this.fecha_registro,
       rol: this.rol,
       ajustes: this.ajustes,
