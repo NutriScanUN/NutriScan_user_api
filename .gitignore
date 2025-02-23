@@ -9,7 +9,7 @@
 ### Firebase Patch ###
 .runtimeconfig.json
 .firebase/
-nutriscan-71493-firebase-adminsdk-ugmom-e4fbdbaa0b.json
+nutriscan-71493-firebase-adminsdk-ugmom-*.json
 
 ### Node ###
 # Logs
