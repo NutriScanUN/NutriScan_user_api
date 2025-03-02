@@ -11,7 +11,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: `https://nutriscan-user-api.onrender.com/api`,
+            url: `http://localhost:3000/api`,
             description: 'Servidor local',
         },
     ],
